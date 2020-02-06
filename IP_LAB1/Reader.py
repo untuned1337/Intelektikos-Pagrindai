@@ -1,13 +1,16 @@
 import csv
-import main
 
-def readFile(fileName):
-    with open(fileName) as csv_file:
+
+def readfile(filename):
+    import main
+    with open(filename) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=';')
         line_count = 0
+        data_list = []
         for row in csv_reader:
-            if line_count!=0:
-                print(row[0])
+            if line_count != 0:
+                data = main.Data(*row)
+                data_list.append(data)
             line_count = line_count + 1
 
-        print(line_count)
+    return data_list
