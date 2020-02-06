@@ -1,3 +1,4 @@
+import Reader
 class Data(object) :
     def __init__(self, id, hours, income, age, education, child5, child13, child17, nonwhite, owned, mortgage, occupation, unemp):
         self.id = id
@@ -13,10 +14,7 @@ class Data(object) :
         self.mortgage = mortgage
         self.occupation = occupation
         self.unemp = unemp
-
-
-
-
+Reader.readFile('./Database/WorkingHours.csv')
 def Min(dataArr):
     min = dataArr[0]
     for data in dataArr:
