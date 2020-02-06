@@ -1,10 +1,13 @@
 import Reader
+import math
 import Data
 from Data import Data
 
 filename = './Database/WorkingHours.csv'
 data_list = Reader.readfile(filename)
+cdata_list = Reader.read_continuous_data(filename)
 
+kazkas = 5;
 
 # For values​of continuous type
 def minimum():
@@ -50,10 +53,52 @@ def maximum():
             max_value.unemployed = item.unemployed
     return max_value
 
-print('reiksmiu sk : ', len(data_list))
-print(minimum().age)
-print(maximum().age)
 
 
+def min2(list):
+    minimum = list[0]
+    for item in list:
+        if(item < minimum):
+            minimum = item
 
+    return minimum
 
+def max2(list):
+    maximum = list[0]
+    for item in list:
+        if(item > maximum):
+            maximum = item
+
+    return maximum
+
+def median(list):
+    sorted_list = sorted(list)
+    return sorted_list[int((len(list)+1)/2)-1]
+
+def quartile_1(list):
+    sorted_list = sorted(list)
+    return sorted_list[int((len(list)+1)/4)-1]
+
+def quartile_3(list):
+    sorted_list = sorted(list)
+    return sorted_list[int(3*(len(list) + 1) / 4) - 1]
+
+def average(list):
+    sum = 0
+    for item in list:
+        sum += item
+    return sum/len(list)
+
+def standart_deviation(list):
+    sum = 0
+    avg = average(list)
+    for item in list:
+        sum += math.pow(item-avg, 2)
+    return math.sqrt(sum/len(list))
+
+print(max2(cdata_list.income_list))
+print(quartile_1(cdata_list.income_list))
+print(median(cdata_list.income_list))
+print(quartile_3(cdata_list.income_list))
+print(standart_deviation(cdata_list.income_list))
+#print(max(cdata_list.hours_list, key=int))

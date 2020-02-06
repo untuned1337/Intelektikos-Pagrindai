@@ -14,3 +14,15 @@ class Data(object):
         self.mortgage = args[10]
         self.occupation = args[11]
         self.unemployed = args[12]
+
+
+class ContinuousData(object):
+    def __init__(self, *args):
+        self.hours_list = args[0]
+        self.income_list = args[1]
+        self.age_list = args[2]
+        self.education_list = args[3]
+        self.child5_list = args[4]
+        self.child13_list = args[5]
+        self.child17_list = args[6]
+        self.unemployed_list = args[7]
