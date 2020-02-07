@@ -26,3 +26,11 @@ class ContinuousData(object):
         self.child13_list = args[5]
         self.child17_list = args[6]
         self.unemployed_list = args[7]
+
+
+class CategoricalData(object):
+    def __init__(self, *args):
+        self.nonwhite_list = args[0]
+        self.owned_list = args[1]
+        self.mortgage_list = args[2]
+        self.occupation_list = args[3]

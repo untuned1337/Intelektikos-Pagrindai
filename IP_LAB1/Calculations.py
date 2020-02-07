@@ -56,9 +56,21 @@ def count_distinct_values(lst):
     """:returns: cardinality"""
     distinct_count = 1
     n = len(lst)
+    sorted_lst = sorted(lst)
     for i in range(1, n):
-        if lst[i] != lst[i - 1]:
+        if sorted_lst[i] != sorted_lst[i - 1]:
             distinct_count = distinct_count + 1
     return distinct_count
 
 # endregion
+
+
+def most_frequent(lst):
+    dictionary = {}
+    for item in lst:
+        if item in dictionary.keys():
+            dictionary[item] += 1
+        else:
+            dictionary.setdefault(item, 1)
+    temp_list = sorted(dictionary, key=dictionary.get, reverse=True)
+    print(temp_list[0], dictionary[temp_list[0]])

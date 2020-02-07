@@ -2,6 +2,7 @@ import csv
 import Data
 from Data import Data
 from Data import ContinuousData
+from Data import CategoricalData
 import Calculations
 from Calculations import *
 def readfile(filename):
@@ -38,11 +39,24 @@ def read_continuous_data(filename):
     return cdata_list
 
 
+def read_categorical_data(filename):
+    with open(filename) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=';')
+        line_count = 0
+        data_list = [[], [], [], []]
+        for row in csv_reader:
+            if line_count != 0:
+                data_list[0].append(int(row[8]))
+                data_list[1].append(int(row[9]))
+                data_list[2].append(int(row[10]))
+                data_list[3].append(row[11])
+            line_count = line_count + 1
+        cdata_list = CategoricalData(*data_list)
+        return cdata_list
+
+
 def write_continuous_data(lst: ContinuousData, filename):
     with open(filename, mode='w', newline='', encoding="utf-8") as csv_file:
-        fieldnames = ['Atributo pavadinimas', 'Kiekis', 'Trukstamos reiksmes', 'Kardinalumas', 'Minimali reiksme',
-                      'Maksimali reiksme', '1-asis kvartilis', '3-asis kvartilis', 'Vidurkis', 'Mediana',
-                      'Standartinis nuokrypis']
         writer = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
 
         hours = lst.hours_list
@@ -80,4 +94,23 @@ def write_continuous_data(lst: ContinuousData, filename):
         writer.writerow(['Unemployed', len(unemployed), 0, count_distinct_values(unemployed), minimum(unemployed),
                          maximum(unemployed), quartile_1(unemployed), quartile_3(unemployed), average(unemployed),
                          median(unemployed), standard_deviation(unemployed)])
+        csv_file.close()
+
+
+def write_categorical_data(lst: CategoricalData, filename):
+    with open(filename, mode='w', newline='', encoding="utf-8") as csv_file:
+        fieldnames = ['Atributo pavadinimas', 'Kiekis', 'Trukstamos reiksmes', 'Kardinalumas', 'Minimali reiksme',
+                      'Maksimali reiksme', '1-asis kvartilis', '3-asis kvartilis', 'Vidurkis', 'Mediana',
+                      'Standartinis nuokrypis']
+        writer = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
+
+        nonwhites = lst.nonwhite_list
+        owned_list = lst.owned_list
+        mortgage_list = lst.mortgage_list
+        occupations = lst.occupation_list
+
+        writer.writerow(['Atributo pavadinimas', 'Kiekis', 'Trukstamos reiksmes', 'Kardinalumas', 'Moda',
+                      'Modos daznumas', 'Moda, %', '2-oji Moda', '2-osios Modos daznumas', '2-oj Moda, %'])
+       # writer.writerow(['Non-White', len(hours), 0, count_distinct_values(hours), minimum(hours), maximum(hours),
+                       # quartile_1(hours), quartile_3(hours), average(hours), median(hours), standard_deviation(hours)])
         csv_file.close()
