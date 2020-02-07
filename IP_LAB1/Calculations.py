@@ -65,7 +65,7 @@ def count_distinct_values(lst):
 # endregion
 
 
-def most_frequent(lst):
+def most_frequent(lst, first: bool):
     dictionary = {}
     for item in lst:
         if item in dictionary.keys():
@@ -73,4 +73,7 @@ def most_frequent(lst):
         else:
             dictionary.setdefault(item, 1)
     temp_list = sorted(dictionary, key=dictionary.get, reverse=True)
-    print(temp_list[0], dictionary[temp_list[0]])
+    if first:
+        return temp_list[0], dictionary[temp_list[0]]
+    else:
+        return temp_list[1], dictionary[temp_list[1]]

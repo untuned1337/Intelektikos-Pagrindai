@@ -5,18 +5,6 @@ from Data import ContinuousData
 from Data import CategoricalData
 import Calculations
 from Calculations import *
-def readfile(filename):
-    with open(filename) as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=';')
-        line_count = 0
-        data_list = []
-        for row in csv_reader:
-            if line_count != 0:
-                data = Data(*row)
-                data_list.append(data)
-            line_count = line_count + 1
-
-    return data_list
 
 
 def read_continuous_data(filename):
@@ -111,6 +99,27 @@ def write_categorical_data(lst: CategoricalData, filename):
 
         writer.writerow(['Atributo pavadinimas', 'Kiekis', 'Trukstamos reiksmes', 'Kardinalumas', 'Moda',
                       'Modos daznumas', 'Moda, %', '2-oji Moda', '2-osios Modos daznumas', '2-oj Moda, %'])
-       # writer.writerow(['Non-White', len(hours), 0, count_distinct_values(hours), minimum(hours), maximum(hours),
-                       # quartile_1(hours), quartile_3(hours), average(hours), median(hours), standard_deviation(hours)])
+
+        writer.writerow(['Non-White', len(nonwhites), 0, count_distinct_values(nonwhites),
+                         most_frequent(nonwhites, True)[0], most_frequent(nonwhites, True)[1],
+                         (100*most_frequent(nonwhites, True)[1])/len(nonwhites), most_frequent(nonwhites, False)[0],
+                         most_frequent(nonwhites, False)[1], (100*most_frequent(nonwhites, False)[1])/len(nonwhites)])
+
+        writer.writerow(['Owned', len(owned_list), 0, count_distinct_values(owned_list),
+                         most_frequent(owned_list, True)[0], most_frequent(owned_list, True)[1],
+                         (100 * most_frequent(owned_list, True)[1]) / len(owned_list),
+                         most_frequent(owned_list, False)[0], most_frequent(owned_list, False)[1],
+                         (100 * most_frequent(owned_list, False)[1]) / len(owned_list)])
+
+        writer.writerow(['Mortgage', len(mortgage_list), 0, count_distinct_values(mortgage_list),
+                         most_frequent(mortgage_list, True)[0], most_frequent(mortgage_list, True)[1],
+                         (100 * most_frequent(mortgage_list, True)[1]) / len(mortgage_list),
+                         most_frequent(mortgage_list, False)[0], most_frequent(mortgage_list, False)[1],
+                         (100 * most_frequent(mortgage_list, False)[1]) / len(mortgage_list)])
+
+        writer.writerow(['Occupation', len(occupations), 0, count_distinct_values(occupations),
+                         most_frequent(occupations, True)[0], most_frequent(occupations, True)[1],
+                         (100 * most_frequent(occupations, True)[1]) / len(occupations),
+                         most_frequent(occupations, False)[0], most_frequent(occupations, False)[1],
+                         (100 * most_frequent(occupations, False)[1]) / len(occupations)])
         csv_file.close()

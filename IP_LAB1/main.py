@@ -10,4 +10,4 @@ FileOperations.write_continuous_data(cont_data_list, continuous_file)
 
 cat_data_list = FileOperations.read_categorical_data(data_file)
 #print(Calculations.count_distinct_values(cat_data_list.occupation_list))
-Calculations.most_frequent(cat_data_list.occupation_list)
+FileOperations.write_categorical_data(cat_data_list, categorical_file)
