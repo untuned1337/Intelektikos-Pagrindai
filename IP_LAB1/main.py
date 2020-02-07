@@ -1,15 +1,15 @@
-import Reader
+import FileOperations
 import math
 import Data
 from Data import Data
 
 filename = './Database/WorkingHours.csv'
-data_list = Reader.readfile(filename)
-cdata_list = Reader.read_continuous_data(filename)
+data_list = FileOperations.readfile(filename)
+cdata_list = FileOperations.read_continuous_data(filename)
 
-kazkas = 5;
+# region Functions for values​of continuous type
 
-# For values​of continuous type
+
 def minimum():
     min_value = data_list[0]
     for item in data_list:
@@ -54,51 +54,69 @@ def maximum():
     return max_value
 
 
+def min2(lst):
+    min_value = lst[0]
+    for item in lst:
+        if item < min_value:
+            min_value = item
 
-def min2(list):
-    minimum = list[0]
-    for item in list:
-        if(item < minimum):
-            minimum = item
+    return min_value
 
-    return minimum
 
 def max2(list):
-    maximum = list[0]
+    max_value = list[0]
     for item in list:
-        if(item > maximum):
-            maximum = item
+        if item > max_value:
+            max_value = item
 
-    return maximum
+    return max_value
 
-def median(list):
-    sorted_list = sorted(list)
-    return sorted_list[int((len(list)+1)/2)-1]
 
-def quartile_1(list):
-    sorted_list = sorted(list)
-    return sorted_list[int((len(list)+1)/4)-1]
+def median(lst):
+    sorted_list = sorted(lst)
+    return sorted_list[int((len(lst) + 1) / 2) - 1]
 
-def quartile_3(list):
-    sorted_list = sorted(list)
-    return sorted_list[int(3*(len(list) + 1) / 4) - 1]
 
-def average(list):
+def quartile_1(lst):
+    sorted_list = sorted(lst)
+    return sorted_list[int((len(lst) + 1) / 4) - 1]
+
+
+def quartile_3(lst):
+    sorted_list = sorted(lst)
+    return sorted_list[int(3 * (len(lst) + 1) / 4) - 1]
+
+
+def average(lst):
     sum = 0
-    for item in list:
+    for item in lst:
         sum += item
-    return sum/len(list)
+    return sum / len(lst)
 
-def standart_deviation(list):
+
+def standard_deviation(lst):
     sum = 0
-    avg = average(list)
-    for item in list:
-        sum += math.pow(item-avg, 2)
-    return math.sqrt(sum/len(list))
+    avg = average(lst)
+    for item in lst:
+        sum += math.pow(item - avg, 2)
+    return math.sqrt(sum / len(lst))
+
+
+def count_distinct_values(lst):
+    """:returns: cardinality"""
+    distinct_count = 1
+    n = len(lst)
+    for i in range(1, n):
+        if lst[i] != lst[i - 1]:
+            distinct_count = distinct_count + 1
+    return distinct_count
+
+# endregion
+
 
 print(max2(cdata_list.income_list))
 print(quartile_1(cdata_list.income_list))
 print(median(cdata_list.income_list))
 print(quartile_3(cdata_list.income_list))
-print(standart_deviation(cdata_list.income_list))
-#print(max(cdata_list.hours_list, key=int))
+print(standard_deviation(cdata_list.income_list))
+print(count_distinct_values(cdata_list.income_list))
