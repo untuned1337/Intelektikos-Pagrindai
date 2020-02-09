@@ -2,14 +2,11 @@ import math
 
 
 # region Functions for values​of continuous type
-
-
 def minimum(lst):
     min_value = lst[0]
     for item in lst:
         if item < min_value:
             min_value = item
-
     return min_value
 
 
@@ -18,7 +15,6 @@ def maximum(lst):
     for item in lst:
         if item > max_value:
             max_value = item
-
     return max_value
 
 
@@ -61,7 +57,6 @@ def count_distinct_values(lst):
         if sorted_lst[i] != sorted_lst[i - 1]:
             distinct_count = distinct_count + 1
     return distinct_count
-
 # endregion
 
 
