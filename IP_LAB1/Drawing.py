@@ -1,9 +1,9 @@
-import inline as inline
 import matplotlib
 import Calculations as cl
 import matplotlib.pyplot as plt
 import numpy as np
 import Data
+import decimal
 
 
 def plot(data):
@@ -16,7 +16,7 @@ def plot(data):
 
 
 def plot_continuous(data: Data.ContinuousData):
-
+    # region Draw 1
     fig, ax = plt.subplots(2, 2)
     fig.canvas.set_window_title('Continuous_1')
     fig.set_size_inches(12, 8)
@@ -28,6 +28,8 @@ def plot_continuous(data: Data.ContinuousData):
     ax[0, 0].set_xlabel('Age of the wife')
     ax[0, 0].set_ylabel('No of individuals')
 
+    bins = range(0, 7000, 500)
+    ax[0, 1].set_xticks(bins)
     ax[0, 1].hist(data.hours_list, bins=range(cl.minimum(data.hours_list), cl.maximum(data.hours_list), 500),
                   edgecolor='black')
     ax[0, 1].set_title('Hours')
@@ -40,16 +42,44 @@ def plot_continuous(data: Data.ContinuousData):
     ax[1, 0].set_xlabel('The other household income in hundreds of dollars')
     ax[1, 0].set_ylabel('No of individuals')
 
-    ax[1, 1].hist(data.education_list, bins=range(cl.minimum(data.education_list), cl.maximum(data.education_list), 1),
-                  edgecolor='black')
+    bins = np.arange(-0.5, 18, 1)
+    ax[1, 1].set_xticks(range(0, 18, 1))
+    ax[1, 1].hist(data.education_list, bins=bins, edgecolor='black')
     ax[1, 1].set_title('Education')
-    ax[1, 1].set_xlabel('Education years of the wife ')
+    ax[1, 1].set_xlabel('Education years of the wife')
     ax[1, 1].set_ylabel('No of individuals')
+    # endregion
 
+    fig1, ax1 = plt.subplots(2, 2)
+    fig1.canvas.set_window_title('Continuous_2')
+    fig1.set_size_inches(12, 8)
 
-    #fig1, ax1 = plt.subplots(2, 2)
-    #fig1.set_window_title('Continuous_2')
-    #fig.set_size_inches(12, 8)
+    bins = np.arange(-0.5, cl.maximum(data.child5_list)+1, 1)
+    ax1[0, 0].set_xticks(range(0, cl.maximum(data.child5_list)+1, 1))
+    ax1[0, 0].hist(data.child5_list, bins=bins, edgecolor='black')
+    ax1[0, 0].set_title('Child5')
+    ax1[0, 0].set_xlabel('Number of children for ages 0 to 5')
+    ax1[0, 0].set_ylabel('No of individuals')
+
+    bins = np.arange(-0.5, cl.maximum(data.child13_list)+1, 1)
+    ax1[0, 0].set_xticks(range(0, cl.maximum(data.child13_list)+1, 1))
+    ax1[0, 1].hist(data.child13_list, bins=bins, edgecolor='black')
+    ax1[0, 1].set_title('Child13')
+    ax1[0, 1].set_xlabel('Number of children for ages 6 to 13')
+    ax1[0, 1].set_ylabel('No of individuals')
+
+    bins = np.arange(-0.5, cl.maximum(data.child17_list)+1, 1)
+    ax1[0, 0].set_xticks(range(0, cl.maximum(data.child17_list)+1, 1))
+    ax1[1, 0].hist(data.child17_list, bins=bins, edgecolor='black')
+    ax1[1, 0].set_title('Child17')
+    ax1[1, 0].set_xlabel('Number of children for ages 14 to 17')
+    ax1[1, 0].set_ylabel('No of individuals')
+
+    bins = range(0, 31, 1)
+    ax1[1, 1].hist(data.unemployed_list, bins=bins, edgecolor='black')
+    ax1[1, 1].set_title('Unemployed')
+    ax1[1, 1].set_xlabel('local unemployment rate in %')
+    ax1[1, 1].set_ylabel('No of individuals')
 
     plt.subplots_adjust(wspace=0.35, hspace=0.35)
     plt.show()
