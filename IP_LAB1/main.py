@@ -12,3 +12,4 @@ cat_data_list = FileOperations.read_categorical_data(data_file)
 FileOperations.write_categorical_data(cat_data_list, categorical_file)
 
 Drawing.plot_continuous(cont_data_list)
+Drawing.identify_outliers(cont_data_list)

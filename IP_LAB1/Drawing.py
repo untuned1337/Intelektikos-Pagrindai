@@ -1,8 +1,11 @@
 import matplotlib
 import Calculations as cl
 import matplotlib.pyplot as plt
+from matplotlib.cbook import boxplot_stats
 import numpy as np
 import Data
+import seaborn as sns
+import pandas as pd
 import decimal
 
 
@@ -39,7 +42,7 @@ def plot_continuous(data: Data.ContinuousData):
     ax[1, 0].hist(data.income_list, bins=range(cl.minimum(data.income_list), cl.maximum(data.income_list), 120),
                   edgecolor='black')
     ax[1, 0].set_title('Income')
-    ax[1, 0].set_xlabel('The other household income in hundreds of dollars')
+    ax[1, 0].set_xlabel('Income in hundreds of dollars')
     ax[1, 0].set_ylabel('No of individuals')
 
     bins = np.arange(-0.5, 18, 1)
@@ -85,8 +88,31 @@ def plot_continuous(data: Data.ContinuousData):
     plt.show()
 
 
-#plt.style.use('fivethirtyeight')
-#blood_sugar = [113, 85, 90, 150, 149, 88, 93, 115, 135, 80, 77, 82, 129]
+def identify_outliers(data: Data.ContinuousData):
+    outlier_dict = {'hours': boxplot_stats(X=data.hours_list)[0]["fliers"],
+                    'unemp': boxplot_stats(X=data.unemployed_list)[0]["fliers"],
+                    'income': boxplot_stats(X=data.income_list)[0]["fliers"]}
+    print(outlier_dict)
+    fig = plt.figure()
+    fig.suptitle('Box plots for outlier identification', fontsize=16)
+    fig.canvas.set_window_title('Box plots')
+    plt.subplot(311, title="hours")
+    sns.boxplot(x=data.hours_list)
+    plt.subplot(312, title="unemployed")
+    sns.boxplot(x=data.unemployed_list)
+    plt.subplot(313, title="income")
+    sns.boxplot(x=data.income_list)
+    plt.subplots_adjust(hspace=1)
+    #ax[1, 0] = sns.boxplot(x=data.unemployed_list)
+    #ax[2, 0] = sns.boxplot(x=data.income_list)
+    #ax = sns.boxplot(x=data.hours_list)
+    #ax1 = sns.boxplot(x=data.unemployed_list)
+    #ax2 = sns.boxplot(x=data.income_list)
+    plt.show()
+
+
+# plt.style.use('fivethirtyeight')
+# blood_sugar = [113, 85, 90, 150, 149, 88, 93, 115, 135, 80, 77, 82, 129]
 '''
 blood_sugar = [0, 0, 0, 0, 1, 1, 1]
 bins = [-0.5, 0.5, 1.5]
