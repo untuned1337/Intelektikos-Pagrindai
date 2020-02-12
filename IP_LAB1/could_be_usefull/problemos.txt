@@ -1,0 +1,5 @@
+1) Ar geros histogramos?
+2) Ar gerai identifikuotos ekstremalios reikšmės?
+3) Kaip daryti 6-tą užduotį?
+4) Ar galiu Household income interpretuoti kaip žmonos income?
+5) Nesuprantu occupation reikšmių, ar galiu sukurti savo duomenis?

@@ -85,6 +85,7 @@ def plot_continuous(data: Data.ContinuousData):
     ax1[1, 1].set_ylabel('No of individuals')
 
     plt.subplots_adjust(wspace=0.35, hspace=0.35)
+
     plt.show()
 
 
@@ -103,6 +104,7 @@ def identify_outliers(data: Data.ContinuousData):
     plt.subplot(313, title="income")
     sns.boxplot(x=data.income_list)
     plt.subplots_adjust(hspace=1)
+
     #ax[1, 0] = sns.boxplot(x=data.unemployed_list)
     #ax[2, 0] = sns.boxplot(x=data.income_list)
     #ax = sns.boxplot(x=data.hours_list)
