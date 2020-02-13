@@ -58,21 +58,30 @@ def plot_continuous(data: Data.ContinuousData):
     fig1.set_size_inches(12, 8)
 
     bins = np.arange(-0.5, cl.maximum(data.child5_list)+1, 1)
+    x_tick_labels = [str(i) for i in range(1, cl.maximum(data.child5_list)+2)]
+    x_tick_labels.insert(0, "none")
     ax1[0, 0].set_xticks(range(0, cl.maximum(data.child5_list)+1, 1))
+    ax1[0, 0].set_xticklabels(x_tick_labels, rotation='vertical')
     ax1[0, 0].hist(data.child5_list, bins=bins, edgecolor='black')
     ax1[0, 0].set_title('Child5')
     ax1[0, 0].set_xlabel('Number of children for ages 0 to 5')
     ax1[0, 0].set_ylabel('No of individuals')
 
     bins = np.arange(-0.5, cl.maximum(data.child13_list)+1, 1)
-    ax1[0, 0].set_xticks(range(0, cl.maximum(data.child13_list)+1, 1))
+    x_tick_labels = [str(i) for i in range(1, cl.maximum(data.child13_list)+2)]
+    x_tick_labels.insert(0, "none")
+    ax1[0, 1].set_xticks(range(0, cl.maximum(data.child13_list)+1, 1))
+    ax1[0, 1].set_xticklabels(x_tick_labels, rotation='vertical')
     ax1[0, 1].hist(data.child13_list, bins=bins, edgecolor='black')
     ax1[0, 1].set_title('Child13')
     ax1[0, 1].set_xlabel('Number of children for ages 6 to 13')
     ax1[0, 1].set_ylabel('No of individuals')
 
     bins = np.arange(-0.5, cl.maximum(data.child17_list)+1, 1)
-    ax1[0, 0].set_xticks(range(0, cl.maximum(data.child17_list)+1, 1))
+    x_tick_labels = [str(i) for i in range(1, cl.maximum(data.child17_list)+2)]
+    x_tick_labels.insert(0, "none")
+    ax1[1, 0].set_xticks(range(0, cl.maximum(data.child17_list)+1, 1))
+    ax1[1, 0].set_xticklabels(x_tick_labels, rotation='vertical')
     ax1[1, 0].hist(data.child17_list, bins=bins, edgecolor='black')
     ax1[1, 0].set_title('Child17')
     ax1[1, 0].set_xlabel('Number of children for ages 14 to 17')
