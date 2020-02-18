@@ -1,6 +1,6 @@
 ;hours;income;age;education;child5;child13;child17;nonwhite;owned;mortgage;occupation;unemp
 1;2000;350;26;12;0;1;0;0;1;1;swcc;7
-2;390;241;29;8;0;1;1;0;1;1;other;4
+2;;241;29;8;0;1;1;0;1;1;other;4
 3;1900;160;33;10;0;2;0;0;1;0;swcc;7
 4;0;80;20;9;2;0;0;0;1;1;other;7
 5;3177;456;33;12;0;2;0;0;1;1;swcc;7
