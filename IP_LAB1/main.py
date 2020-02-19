@@ -1,5 +1,6 @@
 import FileOperations
 import Drawing
+import Calculations
 
 data_file = './Database/WorkingHours.csv'
 continuous_file = './Results/ContinuousData_Results.csv'
@@ -12,4 +13,5 @@ cat_data_list = FileOperations.read_categorical_data(data_file)
 FileOperations.write_categorical_data(cat_data_list, categorical_file)
 
 Drawing.plot_continuous(cont_data_list)
+Drawing.plot_categorical(cat_data_list)
 Drawing.identify_outliers(cont_data_list)

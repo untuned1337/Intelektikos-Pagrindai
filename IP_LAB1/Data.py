@@ -17,7 +17,8 @@ class Data(object):
 
 
 class ContinuousData(object):
-    def __init__(self, *args):
+    def __init__(self, count, *args):
+        self.count = count
         self.hours_list = args[0]
         self.income_list = args[1]
         self.age_list = args[2]
@@ -29,7 +30,8 @@ class ContinuousData(object):
 
 
 class CategoricalData(object):
-    def __init__(self, *args):
+    def __init__(self, count, *args):
+        self.count = count
         self.nonwhite_list = args[0]
         self.owned_list = args[1]
         self.mortgage_list = args[2]

@@ -72,3 +72,17 @@ def most_frequent(lst, first: bool):
         return temp_list[0], dictionary[temp_list[0]]
     else:
         return temp_list[1], dictionary[temp_list[1]]
+
+
+def count(lst: list):
+    return len(lst)
+
+
+def build_dictionary(lst):
+    dictionary = {}
+    for item in lst:
+        if item in dictionary.keys():
+            dictionary[item] += 1
+        else:
+            dictionary.setdefault(item, 1)
+    return dictionary
