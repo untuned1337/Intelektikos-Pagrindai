@@ -86,3 +86,9 @@ def build_dictionary(lst):
         else:
             dictionary.setdefault(item, 1)
     return dictionary
+
+
+def remove_from_list(data_lst: list, removable_items):
+    for item in removable_items:
+        data_lst.remove(item)
+    return data_lst
