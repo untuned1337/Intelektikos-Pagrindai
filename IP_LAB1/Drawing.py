@@ -203,6 +203,14 @@ def identify_outliers(data: Data.ContinuousData):
                     'unemp': boxplot_stats(X=data.unemployed_list)[0]["fliers"],
                     'income': boxplot_stats(X=data.income_list)[0]["fliers"]}
     print(outlier_dict)
+    print(len(data.hours_list))
+
+    mod_hours_lst = Cl.remove_from_list(data.hours_list, outlier_dict['hours'])
+    mod_unemp_lst = Cl.remove_from_list(data.unemployed_list, outlier_dict['unemp'])
+    mod_income_lst = Cl.remove_from_list(data.income_list, outlier_dict['income'])
+
+    #palette = ["m", "g"] - reiks su dviem listais boxplote (SPALVOS)
+
     fig = plt.figure()
     fig.suptitle('Box plots for outlier identification', fontsize=16)
     fig.canvas.set_window_title('Box plots')
@@ -214,6 +222,8 @@ def identify_outliers(data: Data.ContinuousData):
     sns.boxplot(x=data.income_list)
     plt.subplots_adjust(hspace=1)
 
+    print(len(data.hours_list))
+
     # ax[1, 0] = sns.boxplot(x=data.unemployed_list)
     # ax[2, 0] = sns.boxplot(x=data.income_list)
     # ax = sns.boxplot(x=data.hours_list)
@@ -221,6 +231,19 @@ def identify_outliers(data: Data.ContinuousData):
     # ax2 = sns.boxplot(x=data.income_list)
     plt.show()
 
+def test_outliers(data: Data.ContinuousData):
+    outlier_dict = {'hours': boxplot_stats(X=data.hours_list)[0]["fliers"],
+                    'unemp': boxplot_stats(X=data.unemployed_list)[0]["fliers"],
+                    'income': boxplot_stats(X=data.income_list)[0]["fliers"]}
+    mod_hours_lst = Cl.remove_from_list(data.hours_list, outlier_dict['hours'])
+    mod_unemp_lst = Cl.remove_from_list(data.unemployed_list, outlier_dict['unemp'])
+    mod_income_lst = Cl.remove_from_list(data.income_list, outlier_dict['income'])
+    print(outlier_dict)
+    print(len(data.income_list))
+    print(len(mod_income_lst))
+    data_to_plot = [data.income_list, mod_income_lst]
+    sns.boxplot(data=data_to_plot)
+    plt.show()
 
 # plt.style.use('fivethirtyeight')
 # blood_sugar = [113, 85, 90, 150, 149, 88, 93, 115, 135, 80, 77, 82, 129]
