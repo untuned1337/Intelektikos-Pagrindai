@@ -89,6 +89,7 @@ def build_dictionary(lst):
 
 
 def remove_from_list(data_lst: list, removable_items):
-    for item in removable_items:
-        data_lst.remove(item)
-    return data_lst
+    new_lst = data_lst.copy()
+    for item in removable_items[:]:
+        new_lst.remove(item)
+    return new_lst
