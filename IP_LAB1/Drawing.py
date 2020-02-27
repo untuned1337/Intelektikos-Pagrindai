@@ -207,7 +207,7 @@ def identify_outliers(data: Data.ContinuousData):
     plt.subplot(312, title="unemployed")
     sns.boxplot(x=data.unemployed_list)
     plt.subplot(313, title="income")
-    sns.boxplot(x=data.income_list)
+    sns.boxplot(x=data.income_list, whis=6)
     plt.subplots_adjust(hspace=1)
 
     print(len(data.hours_list))
