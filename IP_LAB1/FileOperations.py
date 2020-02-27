@@ -11,44 +11,57 @@ def read_continuous_data(filename):
     with open(filename) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=';')
         line_count = 0
+        fail_count = 0
         data_list = [[], [], [], [], [], [], [], []]
+        test_list = [[], [], [], [], [], [], [], []]
         for row in csv_reader:
             if line_count != 0:
+                fail_count = 0
                 try:
                     data_list[0].append(int(row[1]))
                 except ValueError:
-                    pass
+                    fail_count += 1
                 try:
                     data_list[1].append(int(row[2]))
                 except ValueError:
-                    pass
+                    fail_count += 1
                 try:
                     data_list[2].append(int(row[3]))
                 except ValueError:
-                    pass
+                    fail_count += 1
                 try:
                     data_list[3].append(int(row[4]))
                 except ValueError:
-                    pass
+                    fail_count += 1
                 try:
                     data_list[4].append(int(row[5]))
                 except ValueError:
-                    pass
+                    fail_count += 1
                 try:
                     data_list[5].append(int(row[6]))
                 except ValueError:
-                    pass
+                    fail_count += 1
                 try:
                     data_list[6].append(int(row[7]))
                 except ValueError:
-                    pass
+                    fail_count += 1
                 try:
                     data_list[7].append(int(row[12]))
                 except ValueError:
-                    pass
+                    fail_count += 1
+                if fail_count == 0:
+                    test_list[0].append(int(row[1]))
+                    test_list[1].append(int(row[2]))
+                    test_list[2].append(int(row[3]))
+                    test_list[3].append(int(row[4]))
+                    test_list[4].append(int(row[5]))
+                    test_list[5].append(int(row[6]))
+                    test_list[6].append(int(row[7]))
+                    test_list[7].append(int(row[12]))
             line_count = line_count + 1
     cdata_list = ContinuousData(line_count-1, *data_list)
-    return cdata_list
+    tdata_list = ContinuousData(len(test_list[0]), *test_list)
+    return cdata_list, tdata_list
 
 
 def read_categorical_data(filename):
@@ -71,7 +84,8 @@ def read_categorical_data(filename):
                 except ValueError:
                     pass
                 try:
-                    data_list[3].append(row[11])
+                    if row[11] != '':
+                        data_list[3].append(row[11])
                 except ValueError:
                     pass
             line_count = line_count + 1

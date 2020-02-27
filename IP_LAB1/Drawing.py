@@ -5,6 +5,7 @@ from matplotlib.cbook import boxplot_stats
 import numpy as np
 import Data
 import seaborn as sns
+import math
 import pandas as pd
 import decimal
 
@@ -31,10 +32,11 @@ def plot_continuous(data: Data.ContinuousData):
     ax[0, 0].set_xlabel('Age of the wife')
     ax[0, 0].set_ylabel('No of individuals')
 
-    bins = range(0, 7000, 500)
-    ax[0, 1].set_xticks(bins)
-    ax[0, 1].hist(data.hours_list, bins=range(Cl.minimum(data.hours_list), Cl.maximum(data.hours_list), 500),
+    bins = range(Cl.minimum(data.hours_list), Cl.maximum(data.hours_list), int(len(data.hours_list)/(1+3.22 * math.log(len(data.hours_list)))))
+    ax[0, 1].set_xticks(range(bins[0], bins[len(bins)-1], 500))
+    ax[0, 1].hist(data.hours_list, bins=bins,
                   edgecolor='black')
+    #range(Cl.minimum(data.hours_list), Cl.maximum(data.hours_list), 500)
     ax[0, 1].set_title('Hours')
     ax[0, 1].set_xlabel('Wife working hours per year')
     ax[0, 1].set_ylabel('No of individuals')
@@ -106,16 +108,16 @@ def plot_categorical(data: Data.CategoricalData):
     bins = bins = np.arange(-0.5, Cl.maximum(data.nonwhite_list) + 1, 1)
     ax[0, 0].hist(data.nonwhite_list, bins=bins, edgecolor='black')
     ax[0, 0].set_xticks(range(0, 2))
-    x_tick_labels = ['Non-White', 'White']
+    x_tick_labels = ['White', 'Non-White']
     ax[0, 0].set_xticklabels(x_tick_labels, rotation='horizontal')
-    ax[0, 0].set_title('white or nah?')
-    ax[0, 0].set_xlabel('white?')
+    ax[0, 0].set_title('Race')
+    ax[0, 0].set_xlabel('Is the wife white?')
     ax[0, 0].set_ylabel('No of individuals')
 
     bins = bins = np.arange(-0.5, Cl.maximum(data.owned_list) + 1, 1)
     ax[0, 1].hist(data.owned_list, bins=bins, edgecolor='black')
     ax[0, 1].set_xticks(range(0, 2))
-    x_tick_labels = ['Yes', 'No']
+    x_tick_labels = ['No', 'Yes']
     ax[0, 1].set_xticklabels(x_tick_labels, rotation='horizontal')
     ax[0, 1].set_title('Owned')
     ax[0, 1].set_xlabel('Is the home owned by the household?')
@@ -124,7 +126,7 @@ def plot_categorical(data: Data.CategoricalData):
     bins = bins = np.arange(-0.5, Cl.maximum(data.mortgage_list) + 1, 1)
     ax[1, 0].hist(data.mortgage_list, bins=bins, edgecolor='black')
     ax[1, 0].set_xticks(range(0, 2))
-    x_tick_labels = ['Yes', 'No']
+    x_tick_labels = ['No', 'Yes']
     ax[1, 0].set_xticklabels(x_tick_labels, rotation='horizontal')
     ax[1, 0].set_title('Mortgage')
     ax[1, 0].set_xlabel('Is the home on mortgage?')
@@ -220,18 +222,16 @@ def identify_outliers(data: Data.ContinuousData):
     plt.show()
 
 
-def test_outliers(data: Data.ContinuousData):
+def remove_outliers(data: Data.ContinuousData):
     outlier_dict = {'hours': boxplot_stats(X=data.hours_list)[0]["fliers"],
                     'unemp': boxplot_stats(X=data.unemployed_list)[0]["fliers"],
-                    'income': boxplot_stats(X=data.income_list)[0]["fliers"]}
-    mod_hours_lst = Cl.remove_from_list(data.hours_list, outlier_dict['hours'])
-    mod_unemp_lst = Cl.remove_from_list(data.unemployed_list, outlier_dict['unemp'])
-    print(len(data.income_list))
-    mod_income_lst = Cl.remove_from_list(data.income_list, outlier_dict['income'])
-    print(len(data.income_list))
-    print(len(mod_income_lst))
+                    'income': boxplot_stats(X=data.income_list, whis=6)[0]["fliers"]}
+    #mod_hours_lst = Cl.remove_from_list(data.hours_list, outlier_dict['hours'])
+    #mod_unemp_lst = Cl.remove_from_list(data.unemployed_list, outlier_dict['unemp'])
+    #mod_income_lst = Cl.remove_from_list(data.income_list, outlier_dict['income'])
+    '''
     data_to_plot = [data.income_list, mod_income_lst]
-    sns.boxplot(data=data_to_plot, palette=["m", "g"])
+    sns.boxplot(data=data_to_plot, palette=["m", "g"], whis=6)
     plt.show()
     data_to_plot = [data.hours_list, mod_hours_lst]
     sns.boxplot(data=data_to_plot)
@@ -239,14 +239,20 @@ def test_outliers(data: Data.ContinuousData):
     data_to_plot = [data.unemployed_list, mod_unemp_lst]
     sns.boxplot(data=data_to_plot)
     plt.show()
+    '''
 
-# plt.style.use('fivethirtyeight')
-# blood_sugar = [113, 85, 90, 150, 149, 88, 93, 115, 135, 80, 77, 82, 129]
-'''
-blood_sugar = [0, 0, 0, 0, 1, 1, 1]
-bins = [-0.5, 0.5, 1.5]
-#plt.xticks(np.arange(0, 2, step=1))
-plt.xticks(np.arange(2), [min(blood_sugar), max(blood_sugar)])
-plt.hist(blood_sugar, bins=bins, rwidth=0.95, edgecolor='black', color='g')  # by default number of bins is set to 10
-plt.show()
-'''
+    TEST_modifyyy = Cl.remove_rows_cont(data, outlier_dict['hours'], 'hours')
+
+    TEST_modifyyy = Cl.remove_rows_cont(TEST_modifyyy, outlier_dict['unemp'], 'unemp')
+
+    TEST_modifyyy = Cl.remove_rows_cont(TEST_modifyyy, outlier_dict['income'], 'income')
+
+    #mod_data = data
+    #mod_data.hours_list = mod_hours_lst
+    #mod_data.income_list = mod_income_lst
+    #mod_data.unemployed_list = mod_unemp_lst
+
+    return TEST_modifyyy
+
+def bar_charts(data: Data.CategoricalData):
+    plt.show()
