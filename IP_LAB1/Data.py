@@ -27,6 +27,8 @@ class ContinuousData(object):
         self.child13_list = args[5]
         self.child17_list = args[6]
         self.unemployed_list = args[7]
+        self.occupation_list = []
+        self.categorical_meanings = {}
 
 
 class CategoricalData(object):
@@ -36,3 +38,10 @@ class CategoricalData(object):
         self.owned_list = args[1]
         self.mortgage_list = args[2]
         self.occupation_list = args[3]
+
+
+class AllData(object):
+    def __init__(self, rows_count, con_data: ContinuousData, cat_data: CategoricalData):
+        self.rows_count = rows_count
+        self.continuousData = con_data
+        self.categoricalData = cat_data

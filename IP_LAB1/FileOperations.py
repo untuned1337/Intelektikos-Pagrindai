@@ -1,8 +1,7 @@
 import csv
 import Data
 from Data import Data
-from Data import ContinuousData
-from Data import CategoricalData
+from Data import *
 import Calculations
 from Calculations import *
 
@@ -91,6 +90,92 @@ def read_categorical_data(filename):
             line_count = line_count + 1
         cdata_list = CategoricalData(line_count-1, *data_list)
         return cdata_list
+
+
+def read_all_data(filename):
+    with open(filename) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=';')
+        line_count = 0
+        fail_count = 0
+        test_list = []
+        cat_data_list = [[], [], [], []]
+        con_data_list = [[], [], [], [], [], [], [], []]
+        for row in csv_reader:
+            if line_count != 0:
+                fail_count = 0
+                ''' Continuous now '''
+                try:
+                    test_list.append(int(row[1]))
+                except ValueError:
+                    fail_count += 1
+                try:
+                    test_list.append(int(row[2]))
+                except ValueError:
+                    fail_count += 1
+                try:
+                    test_list.append(int(row[3]))
+                except ValueError:
+                    fail_count += 1
+                try:
+                    test_list.append(int(row[4]))
+                except ValueError:
+                    fail_count += 1
+                try:
+                    test_list.append(int(row[5]))
+                except ValueError:
+                    fail_count += 1
+                try:
+                    test_list.append(int(row[6]))
+                except ValueError:
+                    fail_count += 1
+                try:
+                    test_list.append(int(row[7]))
+                except ValueError:
+                    fail_count += 1
+                try:
+                    test_list.append(int(row[12]))
+                except ValueError:
+                    fail_count += 1
+                ''' Categorical now '''
+                try:
+                    test_list.append(int(row[8]))
+                except ValueError:
+                    fail_count += 1
+                try:
+                    test_list.append(int(row[9]))
+                except ValueError:
+                    fail_count += 1
+                try:
+                    test_list.append(int(row[10]))
+                except ValueError:
+                    fail_count += 1
+                try:
+                    if row[11] != '':
+                        test_list.append(row[11])
+                    else:
+                        fail_count += 1
+                except ValueError:
+                    fail_count += 1
+                if fail_count == 0:
+                    con_data_list[0].append(int(row[1]))
+                    con_data_list[1].append(int(row[2]))
+                    con_data_list[2].append(int(row[3]))
+                    con_data_list[3].append(int(row[4]))
+                    con_data_list[4].append(int(row[5]))
+                    con_data_list[5].append(int(row[6]))
+                    con_data_list[6].append(int(row[7]))
+                    con_data_list[7].append(int(row[12]))
+                    cat_data_list[0].append(int(row[8]))
+                    cat_data_list[1].append(int(row[9]))
+                    cat_data_list[2].append(int(row[10]))
+                    cat_data_list[3].append(row[11])
+            line_count = line_count + 1
+
+    con_data = ContinuousData(len(con_data_list[0]), *con_data_list)
+    cat_data = CategoricalData(len(cat_data_list[0]), *cat_data_list)
+
+    all_data = AllData(line_count - 1, con_data, cat_data)
+    return all_data
 
 
 def write_continuous_data(lst: ContinuousData, filename):
