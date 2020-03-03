@@ -32,11 +32,12 @@ def plot_continuous(data: Data.ContinuousData):
     ax[0, 0].set_xlabel('Age of the wife')
     ax[0, 0].set_ylabel('No of individuals')
 
-    bins = range(Cl.minimum(data.hours_list), Cl.maximum(data.hours_list), int(len(data.hours_list)/(1+3.22 * math.log(len(data.hours_list)))))
-    ax[0, 1].set_xticks(range(bins[0], bins[len(bins)-1], 500))
+    bins = range(Cl.minimum(data.hours_list), Cl.maximum(data.hours_list),
+                 int(len(data.hours_list) / (1 + 3.22 * math.log(len(data.hours_list)))))
+    ax[0, 1].set_xticks(range(bins[0], bins[len(bins) - 1], 500))
     ax[0, 1].hist(data.hours_list, bins=bins,
                   edgecolor='black')
-    #range(Cl.minimum(data.hours_list), Cl.maximum(data.hours_list), 500)
+    # range(Cl.minimum(data.hours_list), Cl.maximum(data.hours_list), 500)
     ax[0, 1].set_title('Hours')
     ax[0, 1].set_xlabel('Wife working hours per year')
     ax[0, 1].set_ylabel('No of individuals')
@@ -139,12 +140,12 @@ def plot_categorical(data: Data.CategoricalData):
     values = list(data_dict.values())
     bins = data.occupation_list
     patches = ax[1, 1].bar(names, values)
-    #print(patches.patches[0].get_height())
+
     ax[1, 1].set_title('Occupation')
     ax[1, 1].set_xlabel('Occupation of the husband')
     ax[1, 1].set_ylabel('No of individuals')
 
-# region Write bar values
+    # region Write bar values
     rects = ax[0, 0].patches
     # Make some labels.
 
@@ -196,14 +197,67 @@ def plot_categorical(data: Data.CategoricalData):
     plt.show()
 
 
-def write_on_bars():
-    pass
+def scatter_plot(test: Data.ContinuousData):
+    dictionary = {}
+    dictionary.setdefault('hours', test.hours_list)
+    dictionary.setdefault('income', test.income_list)
+    dictionary.setdefault('age', test.age_list)
+    dictionary.setdefault('education', test.education_list)
+
+    dictionary.setdefault('unemployed', test.unemployed_list)
+    dictionary.setdefault('child5', test.child5_list)
+    dictionary.setdefault('child13', test.child13_list)
+    dictionary.setdefault('child17', test.child17_list)
+
+    df = pd.DataFrame(dictionary)
+    pd.plotting.scatter_matrix(df, diagonal='scatter')
+
+    plt.suptitle('Tolydinių atributų scatter-plot matrica')
+
+    plt.show()
+
+
+def histograms(data: Data.CategoricalData):
+    dictionary = {}
+    dictionary.setdefault('mortgage', data.mortgage_list)
+    dictionary.setdefault('owned', data.owned_list)
+    df = pd.DataFrame(dictionary)
+
+    df_0 = df[df['mortgage'] == 0]
+    print(df_0['owned'].sum())
+    df_1 = df[df['mortgage'] == 1]
+    print(df_1['owned'].sum())
+
+    raw_data = {'owned, when mortgage=0': [df_0['owned'].sum(), data.count - df_0['owned'].sum()],
+                'owned, when mortgage=1': [df_1['owned'].sum(), data.count - df_1['owned'].sum()]}
+    df_new = pd.DataFrame(raw_data)
+    r = [0, 1]
+
+    # From raw value to percentage
+    totals = [i + j for i, j in zip(df_new['owned, when mortgage=0'], df_new['owned, when mortgage=1'])]
+    mortgages = [i / j * 100 for i, j in zip(df_new['owned, when mortgage=0'], totals)]
+    owned = [i / j * 100 for i, j in zip(df_new['owned, when mortgage=1'], totals)]
+
+    # plot
+    barwidth = 0.85
+    names = ('Not on mortgage', 'On mortgage')
+    # Create green Bars
+    plt.bar(r, mortgages, color='#b5ffb9', edgecolor='white', width=barwidth, label="group A")
+    # Create orange Bars
+    plt.bar(r, owned, bottom=mortgages, color='#f9bc86', edgecolor='white', width=barwidth, label="group B")
+    legends = ('Owned', 'Not owned')
+    plt.legend(legends, loc='upper center', bbox_to_anchor=(0.5, -0.05),
+               fancybox=True, shadow=True, ncol=5)
+    plt.xticks(r, names)
+    plt.title('Correlation between \'Mortgage\' and \'Owned\' attributes')
+    plt.show()
 
 
 def identify_outliers(data: Data.ContinuousData):
     fig = plt.figure()
     fig.suptitle('Box plots for outlier identification', fontsize=16)
     fig.canvas.set_window_title('Box plots')
+
     plt.subplot(311, title="hours")
     sns.boxplot(x=data.hours_list)
     plt.subplot(312, title="unemployed")
@@ -212,13 +266,6 @@ def identify_outliers(data: Data.ContinuousData):
     sns.boxplot(x=data.income_list, whis=6)
     plt.subplots_adjust(hspace=1)
 
-    print(len(data.hours_list))
-
-    # ax[1, 0] = sns.boxplot(x=data.unemployed_list)
-    # ax[2, 0] = sns.boxplot(x=data.income_list)
-    # ax = sns.boxplot(x=data.hours_list)
-    # ax1 = sns.boxplot(x=data.unemployed_list)
-    # ax2 = sns.boxplot(x=data.income_list)
     plt.show()
 
 
@@ -226,33 +273,32 @@ def remove_outliers(data: Data.ContinuousData):
     outlier_dict = {'hours': boxplot_stats(X=data.hours_list)[0]["fliers"],
                     'unemp': boxplot_stats(X=data.unemployed_list)[0]["fliers"],
                     'income': boxplot_stats(X=data.income_list, whis=6)[0]["fliers"]}
-    #mod_hours_lst = Cl.remove_from_list(data.hours_list, outlier_dict['hours'])
-    #mod_unemp_lst = Cl.remove_from_list(data.unemployed_list, outlier_dict['unemp'])
-    #mod_income_lst = Cl.remove_from_list(data.income_list, outlier_dict['income'])
-    '''
-    data_to_plot = [data.income_list, mod_income_lst]
-    sns.boxplot(data=data_to_plot, palette=["m", "g"], whis=6)
-    plt.show()
-    data_to_plot = [data.hours_list, mod_hours_lst]
-    sns.boxplot(data=data_to_plot)
-    plt.show()
-    data_to_plot = [data.unemployed_list, mod_unemp_lst]
-    sns.boxplot(data=data_to_plot)
-    plt.show()
-    '''
 
-    TEST_modifyyy = Cl.remove_rows_cont(data, outlier_dict['hours'], 'hours')
+    modified_data = Cl.remove_rows_cont(data, outlier_dict['hours'], 'hours')
+    modified_data = Cl.remove_rows_cont(modified_data, outlier_dict['unemp'], 'unemp')
+    modified_data = Cl.remove_rows_cont(modified_data, outlier_dict['income'], 'income')
 
-    TEST_modifyyy = Cl.remove_rows_cont(TEST_modifyyy, outlier_dict['unemp'], 'unemp')
+    return modified_data
 
-    TEST_modifyyy = Cl.remove_rows_cont(TEST_modifyyy, outlier_dict['income'], 'income')
 
-    #mod_data = data
-    #mod_data.hours_list = mod_hours_lst
-    #mod_data.income_list = mod_income_lst
-    #mod_data.unemployed_list = mod_unemp_lst
+def correlation_matrix(data: Data.ContinuousData):
+    dictionary = {}
+    dictionary.setdefault('hours', data.hours_list)
+    dictionary.setdefault('income', data.income_list)
+    dictionary.setdefault('age', data.age_list)
+    dictionary.setdefault('education', data.education_list)
 
-    return TEST_modifyyy
+    dictionary.setdefault('unemployed', data.unemployed_list)
+    dictionary.setdefault('child5', data.child5_list)
+    dictionary.setdefault('child13', data.child13_list)
+    dictionary.setdefault('child17', data.child17_list)
 
-def bar_charts(data: Data.CategoricalData):
+    df = pd.DataFrame(dictionary)
+    corr = df.corr()
+    matrix = np.triu(df.corr())
+    ax = sns.heatmap(corr, vmin=-1, vmax=1, center=0, cmap=sns.diverging_palette(20, 220, n=200), square=True,
+                     annot=True, fmt='.1g', mask=matrix)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
+
+    ax.set_title('Tolydinių atributų koreliacijos matrica')
     plt.show()
