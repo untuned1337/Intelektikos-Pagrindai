@@ -153,3 +153,28 @@ def normalization(data: Data.ContinuousData):
     for i in range(len(data.hours_list)):
         data.hours_list[i] =\
             (data.hours_list[i]-minimum(data.hours_list))/(maximum(data.hours_list-minimum(data.hours_list)))
+
+
+def cat_to_cont(cat_data: Data.CategoricalData, cont_data: Data.ContinuousData):
+    dictionary = {}
+    counter = 0
+    for item in cat_data.occupation_list:
+        if item in dictionary.keys():
+            cont_data.occupation_list.append(dictionary[item])
+        else:
+            dictionary.setdefault(item, counter)
+            counter += 1
+            cont_data.occupation_list.append(dictionary[item])
+    cont_data.categorical_meanings = dictionary
+    return cont_data
+
+def covariation(data1: list, data2: list):
+    sum = 0
+    a_average = average(data1)
+    b_average = average(data2)
+    for i in range(len(data1)):
+        sum += (data1[i]-a_average)*(data2[i]-b_average)
+    return sum/(len(data1)-1)
+
+def correliation(data1: list, data2: list):
+    return covariation(data1, data2)/(standard_deviation(data1)*standard_deviation(data2))

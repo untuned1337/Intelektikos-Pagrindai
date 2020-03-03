@@ -27,6 +27,8 @@ class ContinuousData(object):
         self.child13_list = args[5]
         self.child17_list = args[6]
         self.unemployed_list = args[7]
+        self.occupation_list = []
+        self.categorical_meanings = {}
 
 
 class CategoricalData(object):
